@@ -16,7 +16,6 @@ const Footer = () => {
             <p className="text-sm text-muted-foreground">
               Professional bulk SMS platform for businesses across Africa.
             </p>
-            </p>
           </div>
           {[
             { title: "Product", links: ["Features", "Pricing", "API", "Status"] },
