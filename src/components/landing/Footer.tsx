@@ -11,7 +11,7 @@ const Footer = () => {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-primary">
                 <MessageSquare className="h-4 w-4 text-primary-foreground" />
               </div>
-              <span className="text-lg font-bold text-foreground">AbanSMS</span>
+              <span className="text-lg font-bold text-foreground">Abancool SMS</span>
             </Link>
             <p className="text-sm text-muted-foreground">
               Professional bulk SMS platform for businesses across Africa.
