@@ -4,9 +4,9 @@ import { Plus, Send, Clock, CheckCircle, XCircle } from "lucide-react";
 
 const campaigns = [
   { name: "March Promotion", sender: "ABANCOOL", sent: 5200, delivered: 5108, failed: 92, status: "Completed", date: "Mar 10, 2026" },
-  { name: "OTP Service", sender: "AbanSMS", sent: 12400, delivered: 12380, failed: 20, status: "Active", date: "Ongoing" },
+  { name: "OTP Service", sender: "Abancool SMS", sent: 12400, delivered: 12380, failed: 20, status: "Active", date: "Ongoing" },
   { name: "Easter Sale", sender: "ABANCOOL", sent: 0, delivered: 0, failed: 0, status: "Scheduled", date: "Apr 1, 2026" },
-  { name: "Customer Survey", sender: "AbanSMS", sent: 3200, delivered: 3150, failed: 50, status: "Completed", date: "Mar 5, 2026" },
+  { name: "Customer Survey", sender: "Abancool SMS", sent: 3200, delivered: 3150, failed: 50, status: "Completed", date: "Mar 5, 2026" },
   { name: "Welcome Series", sender: "ABANCOOL", sent: 890, delivered: 885, failed: 5, status: "Active", date: "Ongoing" },
 ];
 

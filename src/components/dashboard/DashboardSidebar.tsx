@@ -36,7 +36,7 @@ const DashboardSidebar = () => {
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-primary">
           <MessageSquare className="h-4 w-4 text-primary-foreground" />
         </div>
-        <span className="text-lg font-bold text-sidebar-primary-foreground">AbanSMS</span>
+        <span className="text-lg font-bold text-sidebar-primary-foreground">Abancool SMS</span>
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 py-4">

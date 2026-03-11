@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
-const codeExample = `// Send SMS with AbanSMS API
-const response = await fetch('https://api.abansms.com/v1/send', {
+const codeExample = `// Send SMS with Abancool SMS API
+const response = await fetch('https://api.abancool.com/v1/send', {
   method: 'POST',
   headers: {
     'Authorization': 'Bearer YOUR_API_KEY',
@@ -9,7 +9,7 @@ const response = await fetch('https://api.abansms.com/v1/send', {
   },
   body: JSON.stringify({
     to: '+254712345678',
-    message: 'Hello from AbanSMS!',
+    message: 'Hello from Abancool SMS!',
     sender_id: 'ABANCOOL'
   })
 });

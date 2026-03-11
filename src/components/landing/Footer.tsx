@@ -38,7 +38,7 @@ const Footer = () => {
           ))}
         </div>
         <div className="mt-10 border-t border-border pt-6 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} AbanSMS. All rights reserved.
+          © {new Date().getFullYear()} Abancool SMS. All rights reserved.
         </div>
       </div>
     </footer>
