@@ -36,7 +36,7 @@ const SendSMS = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="ABANCOOL">ABANCOOL</SelectItem>
-                    <SelectItem value="AbanSMS">AbanSMS</SelectItem>
+                    <SelectItem value="AbancoolSMS">Abancool SMS</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

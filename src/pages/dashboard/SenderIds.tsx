@@ -4,7 +4,7 @@ import { Plus, Check, Clock, XCircle } from "lucide-react";
 
 const senderIds = [
   { name: "ABANCOOL", status: "Approved", date: "Jan 15, 2026" },
-  { name: "AbanSMS", status: "Approved", date: "Feb 1, 2026" },
+  { name: "Abancool SMS", status: "Approved", date: "Feb 1, 2026" },
   { name: "MyShop", status: "Pending", date: "Mar 8, 2026" },
   { name: "ALERTS", status: "Rejected", date: "Mar 5, 2026" },
 ];
