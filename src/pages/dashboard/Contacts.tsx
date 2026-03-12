@@ -40,7 +40,8 @@ const Contacts = () => {
     if (!newContact.name || !newContact.phone) return toast.error("Name and phone are required");
     try {
       setSaving(true);
-      const res = await contactsApi.create(newContact);
+      const payload = { name: newContact.name, phone: newContact.phone, ...(newContact.list_id ? { list_id: Number(newContact.list_id) } : {}) };
+      const res = await contactsApi.create(payload);
       if (res.success) {
         toast.success("Contact added");
         setShowAddDialog(false);
