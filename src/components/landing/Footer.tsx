@@ -14,27 +14,32 @@ const Footer = () => {
               <span className="text-lg font-bold text-foreground">Abancool SMS</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              Professional bulk SMS platform for businesses across Africa.
+              Professional bulk SMS platform for businesses across Africa. KES 0.50 per SMS.
             </p>
           </div>
-          {[
-            { title: "Product", links: ["Features", "Pricing", "API", "Status"] },
-            { title: "Company", links: ["About", "Blog", "Careers", "Contact"] },
-            { title: "Legal", links: ["Privacy", "Terms", "Cookie Policy"] },
-          ].map((col) => (
-            <div key={col.title}>
-              <h4 className="mb-4 text-sm font-semibold text-foreground">{col.title}</h4>
-              <ul className="space-y-2">
-                {col.links.map((link) => (
-                  <li key={link}>
-                    <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <div>
+            <h4 className="mb-4 text-sm font-semibold text-foreground">Product</h4>
+            <ul className="space-y-2">
+              <li><a href="/#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Features</a></li>
+              <li><a href="/#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Pricing</a></li>
+              <li><Link to="/developers" className="text-sm text-muted-foreground hover:text-foreground transition-colors">API</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="mb-4 text-sm font-semibold text-foreground">Company</h4>
+            <ul className="space-y-2">
+              <li><Link to="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blog</Link></li>
+              <li><Link to="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="mb-4 text-sm font-semibold text-foreground">Offices</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>📍 Garissa (HQ)</li>
+              <li>📍 Nairobi</li>
+              <li>📍 Kerugoya</li>
+            </ul>
+          </div>
         </div>
         <div className="mt-10 border-t border-border pt-6 text-center text-sm text-muted-foreground">
           © {new Date().getFullYear()} Abancool SMS. All rights reserved.
