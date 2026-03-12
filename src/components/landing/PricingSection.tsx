@@ -7,21 +7,24 @@ const plans = [
   {
     name: "Starter",
     price: "KES 500",
-    credits: "500 SMS",
+    credits: "1,000 SMS",
+    perSms: "KES 0.50",
     features: ["Basic analytics", "1 Sender ID", "CSV upload", "Email support"],
     popular: false,
   },
   {
     name: "Business",
-    price: "KES 4,500",
+    price: "KES 2,500",
     credits: "5,000 SMS",
+    perSms: "KES 0.50",
     features: ["Advanced analytics", "5 Sender IDs", "API access", "Priority support", "Scheduled sending", "Contact lists"],
     popular: true,
   },
   {
     name: "Enterprise",
-    price: "Custom",
-    credits: "Unlimited",
+    price: "KES 5,000",
+    credits: "10,000 SMS",
+    perSms: "KES 0.50",
     features: ["Custom analytics", "Unlimited Sender IDs", "Dedicated API", "24/7 support", "SMPP access", "Account manager"],
     popular: false,
   },
@@ -37,7 +40,7 @@ const PricingSection = () => {
             Simple, transparent pricing
           </h2>
           <p className="text-lg text-muted-foreground">
-            Pay as you go. No monthly fees, no hidden charges.
+            Just <strong className="text-foreground">KES 0.50 per SMS</strong>. No monthly fees, no hidden charges.
           </p>
         </div>
 
@@ -50,9 +53,7 @@ const PricingSection = () => {
               viewport={{ once: true }}
               transition={{ delay: i * 0.15 }}
               className={`relative rounded-2xl border bg-card p-8 shadow-card ${
-                plan.popular
-                  ? "border-primary ring-2 ring-primary/20 scale-105"
-                  : "border-border"
+                plan.popular ? "border-primary ring-2 ring-primary/20 scale-105" : "border-border"
               }`}
             >
               {plan.popular && (
@@ -62,7 +63,8 @@ const PricingSection = () => {
               )}
               <h3 className="mb-1 text-lg font-semibold text-card-foreground">{plan.name}</h3>
               <p className="mb-1 text-sm text-muted-foreground">{plan.credits}</p>
-              <p className="mb-6 text-3xl font-bold text-card-foreground">{plan.price}</p>
+              <p className="mb-1 text-3xl font-bold text-card-foreground">{plan.price}</p>
+              <p className="mb-6 text-xs text-muted-foreground">{plan.perSms} per SMS</p>
               <ul className="mb-8 space-y-3">
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -71,11 +73,7 @@ const PricingSection = () => {
                   </li>
                 ))}
               </ul>
-              <Button
-                className="w-full"
-                variant={plan.popular ? "default" : "outline"}
-                asChild
-              >
+              <Button className="w-full" variant={plan.popular ? "default" : "outline"} asChild>
                 <Link to="/register">Get Started</Link>
               </Button>
             </motion.div>

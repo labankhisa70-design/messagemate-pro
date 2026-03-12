@@ -1,51 +1,72 @@
-import { Send, Users, CreditCard, TrendingUp, ArrowUpRight, ArrowDownRight } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Send, Users, CreditCard, TrendingUp, ArrowUpRight, ArrowDownRight, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-
-const stats = [
-  { label: "Messages Sent", value: "24,832", change: "+12.5%", up: true, icon: Send },
-  { label: "Contacts", value: "8,421", change: "+5.2%", up: true, icon: Users },
-  { label: "SMS Credits", value: "15,200", change: "-8.1%", up: false, icon: CreditCard },
-  { label: "Delivery Rate", value: "98.7%", change: "+0.3%", up: true, icon: TrendingUp },
-];
-
-const chartData = [
-  { name: "Mon", sent: 4200, delivered: 4100 },
-  { name: "Tue", sent: 3800, delivered: 3750 },
-  { name: "Wed", sent: 5100, delivered: 5020 },
-  { name: "Thu", sent: 4600, delivered: 4500 },
-  { name: "Fri", sent: 3900, delivered: 3850 },
-  { name: "Sat", sent: 2100, delivered: 2080 },
-  { name: "Sun", sent: 1800, delivered: 1770 },
-];
-
-const recentCampaigns = [
-  { name: "March Promo", status: "Delivered", sent: 5200, rate: "98.2%" },
-  { name: "OTP Alerts", status: "Sending", sent: 1200, rate: "99.1%" },
-  { name: "Newsletter #12", status: "Scheduled", sent: 0, rate: "—" },
-  { name: "Flash Sale", status: "Delivered", sent: 8400, rate: "97.8%" },
-];
+import { dashboardApi, campaignsApi } from "@/lib/api";
+import { useAuth } from "@/contexts/AuthContext";
 
 const DashboardOverview = () => {
+  const { user } = useAuth();
+  const [stats, setStats] = useState<any>(null);
+  const [campaigns, setCampaigns] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const [statsRes, campaignsRes] = await Promise.all([
+          dashboardApi.getStats(),
+          campaignsApi.list({ limit: 4 }),
+        ]);
+        if (statsRes.success) setStats(statsRes.data);
+        if (campaignsRes.success) setCampaigns(campaignsRes.data || []);
+      } catch (err) {
+        console.error("Failed to load dashboard:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-32">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  const statCards = [
+    { label: "Messages Sent", value: stats?.messages_sent?.toLocaleString() || "0", change: stats?.messages_change || "+0%", up: true, icon: Send },
+    { label: "Contacts", value: stats?.total_contacts?.toLocaleString() || "0", change: stats?.contacts_change || "+0%", up: true, icon: Users },
+    { label: "SMS Credits", value: user?.sms_balance?.toLocaleString() || "0", change: "", up: false, icon: CreditCard },
+    { label: "Delivery Rate", value: stats?.delivery_rate || "0%", change: stats?.delivery_change || "+0%", up: true, icon: TrendingUp },
+  ];
+
+  const chartData = stats?.chart_data || [];
+
   return (
     <div>
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
-        <p className="text-sm text-muted-foreground">Welcome back! Here's your SMS overview.</p>
+        <p className="text-sm text-muted-foreground">Welcome back, {user?.name || "User"}! Here's your SMS overview.</p>
       </div>
 
       <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => (
+        {statCards.map((stat) => (
           <Card key={stat.label} className="shadow-card">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
                   <stat.icon className="h-5 w-5 text-primary" />
                 </div>
-                <span className={`flex items-center gap-1 text-xs font-medium ${stat.up ? "text-success" : "text-destructive"}`}>
-                  {stat.up ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
-                  {stat.change}
-                </span>
+                {stat.change && (
+                  <span className={`flex items-center gap-1 text-xs font-medium ${stat.up ? "text-success" : "text-destructive"}`}>
+                    {stat.up ? <ArrowUpRight className="h-3 w-3" /> : <ArrowDownRight className="h-3 w-3" />}
+                    {stat.change}
+                  </span>
+                )}
               </div>
               <p className="mt-4 text-2xl font-bold text-card-foreground">{stat.value}</p>
               <p className="text-sm text-muted-foreground">{stat.label}</p>
@@ -61,23 +82,20 @@ const DashboardOverview = () => {
           </CardHeader>
           <CardContent>
             <div className="h-72">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                  <XAxis dataKey="name" tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
-                  <YAxis tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "hsl(var(--card))",
-                      border: "1px solid hsl(var(--border))",
-                      borderRadius: "8px",
-                      fontSize: "12px",
-                    }}
-                  />
-                  <Bar dataKey="sent" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="delivered" fill="hsl(var(--accent))" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
+              {chartData.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={chartData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
+                    <XAxis dataKey="name" tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
+                    <YAxis tick={{ fontSize: 12, fill: "hsl(var(--muted-foreground))" }} />
+                    <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", fontSize: "12px" }} />
+                    <Bar dataKey="sent" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                    <Bar dataKey="delivered" fill="hsl(var(--accent))" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex h-full items-center justify-center text-sm text-muted-foreground">No activity data yet. Start sending SMS!</div>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -87,27 +105,25 @@ const DashboardOverview = () => {
             <CardTitle className="text-base font-semibold">Recent Campaigns</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {recentCampaigns.map((c) => (
-                <div key={c.name} className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-card-foreground">{c.name}</p>
-                    <p className="text-xs text-muted-foreground">{c.sent.toLocaleString()} sent • {c.rate}</p>
+            {campaigns.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No campaigns yet</p>
+            ) : (
+              <div className="space-y-4">
+                {campaigns.map((c: any) => (
+                  <div key={c.id} className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-card-foreground">{c.name}</p>
+                      <p className="text-xs text-muted-foreground">{c.sent?.toLocaleString() || 0} sent</p>
+                    </div>
+                    <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                      c.status === "Completed" || c.status === "completed" ? "bg-success/10 text-success" :
+                      c.status === "Active" || c.status === "active" ? "bg-info/10 text-info" :
+                      "bg-warning/10 text-warning"
+                    }`}>{c.status}</span>
                   </div>
-                  <span
-                    className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
-                      c.status === "Delivered"
-                        ? "bg-success/10 text-success"
-                        : c.status === "Sending"
-                        ? "bg-info/10 text-info"
-                        : "bg-warning/10 text-warning"
-                    }`}
-                  >
-                    {c.status}
-                  </span>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>

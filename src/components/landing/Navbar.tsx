@@ -9,7 +9,9 @@ const Navbar = () => {
   const navLinks = [
     { label: "Features", href: "#features" },
     { label: "Pricing", href: "#pricing" },
-    { label: "Developers", href: "#developers" },
+    { label: "Developers", href: "/developers", isRoute: true },
+    { label: "Blog", href: "/blog", isRoute: true },
+    { label: "Contact", href: "/contact", isRoute: true },
   ];
 
   return (
@@ -23,53 +25,45 @@ const Navbar = () => {
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) =>
+            link.isRoute ? (
+              <Link key={link.label} to={link.href} className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+                {link.label}
+              </Link>
+            ) : (
+              <a key={link.label} href={link.href} className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+                {link.label}
+              </a>
+            )
+          )}
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
-          <Button variant="ghost" asChild>
-            <Link to="/login">Log in</Link>
-          </Button>
-          <Button asChild>
-            <Link to="/register">Get Started</Link>
-          </Button>
+          <Button variant="ghost" asChild><Link to="/login">Log in</Link></Button>
+          <Button asChild><Link to="/register">Get Started</Link></Button>
         </div>
 
-        <button
-          className="md:hidden text-foreground"
-          onClick={() => setMobileOpen(!mobileOpen)}
-        >
+        <button className="md:hidden text-foreground" onClick={() => setMobileOpen(!mobileOpen)}>
           {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
 
       {mobileOpen && (
         <div className="border-t border-border bg-background px-4 pb-4 md:hidden">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className="block py-3 text-sm font-medium text-muted-foreground"
-              onClick={() => setMobileOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) =>
+            link.isRoute ? (
+              <Link key={link.label} to={link.href} className="block py-3 text-sm font-medium text-muted-foreground" onClick={() => setMobileOpen(false)}>
+                {link.label}
+              </Link>
+            ) : (
+              <a key={link.label} href={link.href} className="block py-3 text-sm font-medium text-muted-foreground" onClick={() => setMobileOpen(false)}>
+                {link.label}
+              </a>
+            )
+          )}
           <div className="mt-3 flex flex-col gap-2">
-            <Button variant="ghost" asChild>
-              <Link to="/login">Log in</Link>
-            </Button>
-            <Button asChild>
-              <Link to="/register">Get Started</Link>
-            </Button>
+            <Button variant="ghost" asChild><Link to="/login">Log in</Link></Button>
+            <Button asChild><Link to="/register">Get Started</Link></Button>
           </div>
         </div>
       )}
